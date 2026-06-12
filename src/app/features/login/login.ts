@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,8 +29,7 @@ export class Login implements OnInit {
     }
     const { email, password } = this.form.value;
     this.authService.login(email!, password!).subscribe({
-      //TODO: check where to navigate after login!!!
-      next: () => this.router.navigate(['/app']),
+      next: () => this.router.navigate(['/home']),
       error: () => (this.errorMessage = 'Wrong username or password'),
     });
   }

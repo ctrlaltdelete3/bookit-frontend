@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -44,8 +44,7 @@ export class Register implements OnInit {
 
     const { email, firstName, lastName, password, phone } = this.form.value;
     this.authService.register(firstName!, lastName!, email!, password!, phone!).subscribe({
-      //TODO: change navigate
-      next: () => this.router.navigate(['/app']),
+      next: () => this.router.navigate(['/home']),
       error: (err) => {
         if (err.status === 409) {
           this.errorMessage = err.error.error;
