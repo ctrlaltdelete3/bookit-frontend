@@ -1,0 +1,9 @@
+<header>
+  <div>
+    <h1>Book it</h1>
+    <p>Wellcome to Book-it App!</p>
+  </div>
+  @if (IsLoggedIn) {
+    <button (click)="onLogout()">Odjava</button>
+  }
+</header>

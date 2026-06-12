@@ -1,0 +1,22 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="email">Email</label>
+    <input type="email" formControlName="email" />
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+      <span>Email je obavezan.</span>
+    }
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" formControlName="password" />
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+      <span>Lozinka mora imati minimalno 8 znakova.</span>
+    }
+  </div>
+
+  @if (errorMessage !== '') {
+    <p>{{ errorMessage }}</p>
+  }
+
+  <button type="submit" [disabled]="form.invalid">Login</button>
+</form>

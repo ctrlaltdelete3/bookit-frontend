@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="email">Email</label>
+    <input type="email" formControlName="email" />
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+      <span>Email je obavezan.</span>
+    }
+  </div>
+  <div>
+    <label for="firstName">Ime</label>
+    <input type="text" formControlName="firstName" />
+    @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+      <span>Ime je obavezno.</span>
+    }
+  </div>
+  <div>
+    <label for="lastName">Prezime</label>
+    <input type="text" formControlName="lastName" />
+    @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+      <span>Prezime je obavezno.</span>
+    }
+  </div>
+  <div>
+    <label for="password">Lozinka</label>
+    <input type="password" formControlName="password" />
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+      <span>Lozinka je obavezna.</span>
+    }
+  </div>
+  <div>
+    <label for="phone">Broj mobitela</label>
+    <input type="text" formControlName="phone" />
+    @if (form.controls.phone.touched && form.controls.phone.invalid) {
+      <span>Broj mobitela je obavezan.</span>
+    }
+  </div>
+
+  @if (errorMessage !== '') {
+    <p>{{ errorMessage }}</p>
+  }
+
+  <div>
+    <button type="submit" [disabled]="form.invalid">Registriraj se</button>
+  </div>
+</form>
