@@ -4,6 +4,7 @@
     <p>Wellcome to Book-it App!</p>
   </div>
   @if (IsLoggedIn) {
+    <a routerLink="/my-appointments">Moji termini</a>
     <button (click)="onLogout()">Odjava</button>
   }
 </header>

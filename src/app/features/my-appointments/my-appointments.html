@@ -1,0 +1,34 @@
+@if (myAppointments()) {
+  @for (appointment of myAppointments(); track appointment.id) {
+    <div>
+      <p>{{ appointment.serviceName }}</p>
+      <p>{{ appointment.tenantName }}</p>
+      <p>{{ appointment.date }}</p>
+      <p>{{ appointment.startTime }} - {{ appointment.endTime }}</p>
+      <p>{{ appointment.status }}</p>
+
+      @if (appointment.note) {
+        <p>Napomena: {{ appointment.note }}</p>
+      }
+
+      @if (appointment.tenantNote) {
+        <p>Napomena pružatelja usluge: {{ appointment.tenantNote }}</p>
+      }
+
+      @if (appointment.cancellationReason) {
+        <p>Razlog otkazivanja: {{ appointment.cancellationReason }}</p>
+      }
+
+      @if (appointment.rejectionReason) {
+        <p>Razlog odbijanja: {{ appointment.rejectionReason }}</p>
+      }
+
+      @if (
+        appointment.status === AppointmentStatus.Pending ||
+        appointment.status === AppointmentStatus.Confirmed
+      ) {
+        <button (click)="onCancelAppointment(appointment)">Otkaži</button>
+      }
+    </div>
+  }
+}
