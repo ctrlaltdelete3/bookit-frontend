@@ -44,7 +44,10 @@ export class Register implements OnInit {
 
     const { email, firstName, lastName, password, phone } = this.form.value;
     this.authService.register(firstName!, lastName!, email!, password!, phone!).subscribe({
-      next: () => this.router.navigate(['/home']),
+      next: () =>
+        this.authService.getCurrentUser().subscribe({
+          next: () => this.router.navigate(['/home']),
+        }),
       error: (err) => {
         if (err.status === 409) {
           this.errorMessage = err.error.error;

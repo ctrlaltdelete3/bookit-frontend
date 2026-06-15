@@ -4,6 +4,7 @@ import { Register } from './features/register/register';
 import { Home } from './features/home/home';
 import { authGuard } from './core/auth/auth.guard';
 import { redirectGuard } from './core/auth/redirect.guard';
+import { Tenant } from './features/tenant/tenant';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,10 @@ export const routes: Routes = [
     path: 'home',
     component: Home,
     canActivate: [authGuard],
+  },
+  {
+    path: 't/:slug',
+    component: Tenant,
   },
   {
     path: '**',

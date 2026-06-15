@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthResponse, RegisterRequest } from './auth.model';
+import { AuthResponse, RegisterRequest, User } from './auth.model';
 import { tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private httpClient = inject(HttpClient);
   private router = inject(Router);
+  currentUser = signal<User | undefined>(undefined);
 
   login(email: string, password: string) {
     return this.httpClient.post<AuthResponse>('/api/user/login', { email, password }).pipe(
@@ -17,6 +18,7 @@ export class AuthService {
     );
   }
 
+  //TODO: implement this in backend then test; also impelement refresh token!!
   logout() {
     return this.httpClient.post('/api/user/logout', null).pipe(
       tap(() => {
@@ -33,6 +35,18 @@ export class AuthService {
         localStorage.setItem('token', response.token);
       }),
     );
+  }
+
+  getCurrentUser() {
+    return this.httpClient.get<User>('/api/user/me').pipe(
+      tap((user) => {
+        this.currentUser.set(user);
+      }),
+    );
+  }
+
+  isTenantOwner(): boolean {
+    return this.currentUser()?.isTenantOwner ?? false;
   }
 
   isLoggedIn() {

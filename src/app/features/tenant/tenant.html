@@ -1,0 +1,38 @@
+<div>
+  @if (tenant(); as t) {
+    <h1>{{ t.name }}</h1>
+    <p>{{ t.activityType }}</p>
+    <p>{{ t.description }}</p>
+    <p>{{ t.ownerName }}</p>
+    <p>{{ t.city }}</p>
+    <p>{{ t.address }}</p>
+    @if (t.isActive) {
+      <p>Kontakt:</p>
+      <p>{{ t.contactEmail }}</p>
+      <p>{{ t.contactPhone }}</p>
+    }
+
+    <div>
+      <p>Working hours:</p>
+      @for (item of workingHours(); track item.id) {
+        <p>{{ item.dayOfWeek | dayOfWeek }}:</p>
+        @if (item.isWorkingDay) {
+          <p>{{ item.startTime }} - {{ item.endTime }}</p>
+          <p>Pauza: {{ item.pauseStart }} - {{ item.pauseEnd }}</p>
+        } @else {
+          <p>Neradni dan</p>
+        }
+      }
+    </div>
+
+    <div>
+      <p>Services provided by {{ t.name }}:</p>
+      @for (item of tenantServices(); track item.id) {
+        <p>{{ item.name }} - {{ item.durationMinutes }} min - {{ item.price }} €</p>
+        @if (item.description) {
+          <p>{{ item.description }}</p>
+        }
+      }
+    </div>
+  }
+</div>

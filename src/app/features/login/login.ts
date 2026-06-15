@@ -29,7 +29,11 @@ export class Login implements OnInit {
     }
     const { email, password } = this.form.value;
     this.authService.login(email!, password!).subscribe({
-      next: () => this.router.navigate(['/home']),
+      next: () => {
+        this.authService.getCurrentUser().subscribe({
+          next: () => this.router.navigate(['/home']),
+        });
+      },
       error: () => (this.errorMessage = 'Wrong username or password'),
     });
   }
