@@ -1,38 +1,55 @@
-<div>
+<div class="page-container">
   @if (tenant(); as t) {
-    <h1>{{ t.name }}</h1>
-    <p>{{ t.activityType }}</p>
-    <p>{{ t.description }}</p>
-    <p>{{ t.ownerName }}</p>
-    <p>{{ t.city }}</p>
-    <p>{{ t.address }}</p>
-    @if (t.isActive) {
-      <p>Kontakt:</p>
-      <p>{{ t.contactEmail }}</p>
-      <p>{{ t.contactPhone }}</p>
-    }
+    <div class="tenant-header">
+      <h1 class="tenant-name">{{ t.name }}</h1>
+      <p class="tenant-activity">{{ t.activityType }}</p>
+    </div>
 
-    <div>
-      <p>Working hours:</p>
-      @for (item of workingHours(); track item.id) {
-        <p>{{ item.dayOfWeek | dayOfWeek }}:</p>
-        @if (item.isWorkingDay) {
-          <p>{{ item.startTime }} - {{ item.endTime }}</p>
-          <p>Pauza: {{ item.pauseStart }} - {{ item.pauseEnd }}</p>
-        } @else {
-          <p>Neradni dan</p>
-        }
+    <div class="tenant-meta">
+      <span>{{ t.city }}</span>
+      <span>{{ t.address }}</span>
+      @if (t.isActive) {
+        <span>{{ t.contactEmail }}</span>
+        <span>{{ t.contactPhone }}</span>
       }
     </div>
 
-    <div>
-      <p>Services provided by {{ t.name }}:</p>
-      @for (item of tenantServices(); track item.id) {
-        <p>{{ item.name }} - {{ item.durationMinutes }} min - {{ item.price }} €</p>
-        @if (item.description) {
-          <p>{{ item.description }}</p>
+    @if (t.description) {
+      <p class="tenant-description">{{ t.description }}</p>
+    }
+
+    <div class="tenant-section">
+      <h3 class="section-title">Radno vrijeme</h3>
+      <div class="working-hours-list">
+        @for (item of workingHours(); track item.id) {
+          <div class="working-hours-item">
+            <span class="working-hours-day">{{ item.dayOfWeek | dayOfWeek }}</span>
+            @if (item.isWorkingDay) {
+              <span class="working-hours-time">{{ item.startTime }} – {{ item.endTime }}</span>
+            } @else {
+              <span class="working-hours-closed">Neradni dan</span>
+            }
+          </div>
         }
-      }
+      </div>
+    </div>
+
+    <div class="tenant-section">
+      <h3 class="section-title">Usluge</h3>
+      <div class="services-list">
+        @for (item of tenantServices(); track item.id) {
+          <div class="card service-card">
+            <div class="service-card-header">
+              <span class="service-name">{{ item.name }}</span>
+              <span class="service-price">{{ item.price }} €</span>
+            </div>
+            <div class="service-meta">{{ item.durationMinutes }} min</div>
+            @if (item.description) {
+              <p class="service-description">{{ item.description }}</p>
+            }
+          </div>
+        }
+      </div>
     </div>
   }
 </div>

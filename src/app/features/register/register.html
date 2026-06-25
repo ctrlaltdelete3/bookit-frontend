@@ -1,45 +1,47 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-card">
+  <div class="form-group">
     <label for="email">Email</label>
-    <input type="email" formControlName="email" />
+    <input type="email" formControlName="email" class="form-control" />
     @if (form.controls.email.touched && form.controls.email.invalid) {
-      <span>Email je obavezan.</span>
+      <span class="form-error">Email je obavezan.</span>
     }
   </div>
-  <div>
+  <div class="form-group">
     <label for="firstName">Ime</label>
-    <input type="text" formControlName="firstName" />
+    <input type="text" formControlName="firstName" class="form-control" />
     @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
-      <span>Ime je obavezno.</span>
+      <span class="form-error">Ime je obavezno.</span>
     }
   </div>
-  <div>
+  <div class="form-group">
     <label for="lastName">Prezime</label>
-    <input type="text" formControlName="lastName" />
+    <input type="text" formControlName="lastName" class="form-control" />
     @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
-      <span>Prezime je obavezno.</span>
+      <span class="form-error">Prezime je obavezno.</span>
     }
   </div>
-  <div>
+  <div class="form-group">
     <label for="password">Lozinka</label>
-    <input type="password" formControlName="password" />
+    <input type="password" formControlName="password" class="form-control" />
     @if (form.controls.password.touched && form.controls.password.invalid) {
-      <span>Lozinka je obavezna.</span>
+      <span class="form-error">Lozinka je obavezna.</span>
     }
   </div>
-  <div>
+  <div class="form-group">
     <label for="phone">Broj mobitela</label>
-    <input type="text" formControlName="phone" />
+    <input type="text" formControlName="phone" class="form-control" />
     @if (form.controls.phone.touched && form.controls.phone.invalid) {
-      <span>Broj mobitela je obavezan.</span>
+      <span class="form-error">Broj mobitela je obavezan.</span>
     }
   </div>
 
   @if (errorMessage !== '') {
-    <p>{{ errorMessage }}</p>
+    <p class="form-error-message">{{ errorMessage }}</p>
   }
 
   <div>
-    <button type="submit" [disabled]="form.invalid">Registriraj se</button>
+    <button type="submit" [disabled]="form.invalid" class="btn btn-primary btn-full">
+      Registriraj se
+    </button>
   </div>
 </form>

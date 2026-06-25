@@ -1,34 +1,54 @@
-@if (myAppointments()) {
-  @for (appointment of myAppointments(); track appointment.id) {
-    <div>
-      <p>{{ appointment.serviceName }}</p>
-      <p>{{ appointment.tenantName }}</p>
-      <p>{{ appointment.date }}</p>
-      <p>{{ appointment.startTime }} - {{ appointment.endTime }}</p>
-      <p>{{ appointment.status }}</p>
+<div class="page-container">
+  <h2 class="page-title">Moji termini</h2>
 
-      @if (appointment.note) {
-        <p>Napomena: {{ appointment.note }}</p>
-      }
+  @if (myAppointments()) {
+    <div class="appointments-list">
+      @for (appointment of myAppointments(); track appointment.id) {
+        <div class="card appointment-card">
+          <div class="appointment-card-header">
+            <div>
+              <p class="appointment-service">{{ appointment.serviceName }}</p>
+              <p class="appointment-tenant">{{ appointment.tenantName }}</p>
+            </div>
+            <span class="badge"
+              [class.badge-pending]="appointment.status === AppointmentStatus.Pending"
+              [class.badge-confirmed]="appointment.status === AppointmentStatus.Confirmed"
+              [class.badge-canceled]="appointment.status === AppointmentStatus.Canceled"
+              [class.badge-rejected]="appointment.status === AppointmentStatus.Rejected">
+              {{ appointment.status }}
+            </span>
+          </div>
 
-      @if (appointment.tenantNote) {
-        <p>Napomena pružatelja usluge: {{ appointment.tenantNote }}</p>
-      }
+          <div class="appointment-card-meta">
+            <span>{{ appointment.date }}</span>
+            <span>{{ appointment.startTime }} – {{ appointment.endTime }}</span>
+          </div>
 
-      @if (appointment.cancellationReason) {
-        <p>Razlog otkazivanja: {{ appointment.cancellationReason }}</p>
-      }
+          @if (appointment.note) {
+            <p class="appointment-note">Vaša napomena: {{ appointment.note }}</p>
+          }
+          @if (appointment.tenantNote) {
+            <p class="appointment-note">Napomena pružatelja usluge: {{ appointment.tenantNote }}</p>
+          }
+          @if (appointment.cancellationReason) {
+            <p class="appointment-note appointment-note--reason">Razlog otkazivanja: {{ appointment.cancellationReason }}</p>
+          }
+          @if (appointment.rejectionReason) {
+            <p class="appointment-note appointment-note--reason">Razlog odbijanja: {{ appointment.rejectionReason }}</p>
+          }
 
-      @if (appointment.rejectionReason) {
-        <p>Razlog odbijanja: {{ appointment.rejectionReason }}</p>
-      }
-
-      @if (
-        appointment.status === AppointmentStatus.Pending ||
-        appointment.status === AppointmentStatus.Confirmed
-      ) {
-        <button (click)="onCancelAppointment(appointment)">Otkaži</button>
+          @if (
+            appointment.status === AppointmentStatus.Pending ||
+            appointment.status === AppointmentStatus.Confirmed
+          ) {
+            <div class="appointment-card-actions">
+              <button class="btn btn-danger btn-sm" (click)="onCancelAppointment(appointment)">Otkaži</button>
+            </div>
+          }
+        </div>
+      } @empty {
+        <p class="empty-state">Nemate zakazanih termina.</p>
       }
     </div>
   }
-}
+</div>

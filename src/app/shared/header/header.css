@@ -1,0 +1,38 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-xl);
+  height: var(--header-height);
+  background-color: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.header-logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-primary);
+  letter-spacing: -0.02em;
+}
+
+.header-tagline {
+  font-size: 11px;
+  color: var(--c-text-muted);
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}

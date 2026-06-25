@@ -1,1 +1,299 @@
-/* You can add global styles to this file, and also import other style files */
+/* === CSS Variables === */
+:root {
+  --c-primary: #0069ff;
+  --c-primary-hover: #0052cc;
+  --c-primary-light: #eef4ff;
+
+  --c-bg: #f7f8fb;
+  --c-surface: #ffffff;
+  --c-border: #dcdfe5;
+  --c-border-strong: #b0b7c3;
+
+  --c-text: #1f2023;
+  --c-text-muted: #70757e;
+  --c-text-subtle: #9ea3ac;
+
+  --c-error: #e53935;
+  --c-error-bg: #fff0f0;
+  --c-success: #16a34a;
+  --c-success-bg: #f0fdf4;
+  --c-warning: #d97706;
+  --c-warning-bg: #fffbeb;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-full: 999px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+
+  --header-height: 64px;
+}
+
+/* === Reset & Base === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--c-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+}
+
+/* === Buttons === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  border: 1.5px solid transparent;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--c-primary);
+  color: #ffffff;
+  border-color: var(--c-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--c-primary-hover);
+  border-color: var(--c-primary-hover);
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background-color: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--c-bg);
+  border-color: var(--c-border-strong);
+  text-decoration: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--c-primary);
+  border-color: var(--c-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--c-primary-light);
+  text-decoration: none;
+}
+
+.btn-danger {
+  background-color: transparent;
+  color: var(--c-error);
+  border-color: var(--c-error);
+}
+
+.btn-danger:hover {
+  background-color: var(--c-error-bg);
+  text-decoration: none;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 13px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* === Forms === */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-lg);
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.01em;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--c-text);
+  background-color: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-sm);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  appearance: none;
+}
+
+.form-control::placeholder {
+  color: var(--c-text-subtle);
+}
+
+.form-control:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px rgba(0, 105, 255, 0.12);
+}
+
+.form-error {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-error);
+  margin-top: var(--space-xs);
+}
+
+.form-error-message {
+  background-color: var(--c-error-bg);
+  color: var(--c-error);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(229, 57, 53, 0.2);
+  margin-bottom: var(--space-md);
+}
+
+/* === Auth page layout === */
+.auth-card {
+  background-color: var(--c-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--c-border);
+  padding: 48px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: 28px;
+}
+
+/* === Status Badges === */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--r-full);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-pending {
+  background-color: var(--c-warning-bg);
+  color: var(--c-warning);
+}
+
+.badge-confirmed {
+  background-color: var(--c-success-bg);
+  color: var(--c-success);
+}
+
+.badge-canceled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.badge-rejected {
+  background-color: var(--c-error-bg);
+  color: var(--c-error);
+}
+
+/* === Card === */
+.card {
+  background-color: var(--c-surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--c-border);
+}
+
+/* === Page Layout === */
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: var(--space-xl);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: var(--space-md);
+}
+
+/* === Empty State === */
+.empty-state {
+  text-align: center;
+  color: var(--c-text-muted);
+  padding: var(--space-xl);
+  font-size: 15px;
+}

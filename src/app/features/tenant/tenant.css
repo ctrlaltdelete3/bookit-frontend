@@ -1,0 +1,126 @@
+:host {
+  display: block;
+}
+
+.tenant-header {
+  margin-bottom: var(--space-sm);
+}
+
+.tenant-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--c-text);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.tenant-activity {
+  font-size: 15px;
+  color: var(--c-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+}
+
+.tenant-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--c-primary-light);
+  border-radius: var(--r-md);
+}
+
+.tenant-description {
+  font-size: 15px;
+  color: var(--c-text-muted);
+  line-height: 1.7;
+  margin-bottom: var(--space-xl);
+}
+
+.tenant-section {
+  margin-top: var(--space-xl);
+}
+
+/* Working hours */
+.working-hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background-color: var(--c-surface);
+}
+
+.working-hours-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px var(--space-lg);
+  border-bottom: 1px solid var(--c-border);
+  font-size: 14px;
+}
+
+.working-hours-item:last-child {
+  border-bottom: none;
+}
+
+.working-hours-day {
+  font-weight: 500;
+  color: var(--c-text);
+  min-width: 110px;
+}
+
+.working-hours-time {
+  color: var(--c-text-muted);
+}
+
+.working-hours-closed {
+  color: var(--c-text-subtle);
+  font-style: italic;
+}
+
+/* Services */
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.service-card {
+  padding: var(--space-lg);
+}
+
+.service-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.service-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.service-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-primary);
+}
+
+.service-meta {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.service-description {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-top: var(--space-sm);
+}

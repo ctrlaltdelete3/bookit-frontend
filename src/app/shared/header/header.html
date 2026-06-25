@@ -1,10 +1,12 @@
-<header>
-  <div>
-    <h1>Book it</h1>
-    <p>Wellcome to Book-it App!</p>
+<header class="header">
+  <div class="header-brand">
+    <h1 class="header-logo">Book it</h1>
+    <p class="header-tagline">Wellcome to Book-it App!</p>
   </div>
   @if (IsLoggedIn) {
-    <a routerLink="/my-appointments">Moji termini</a>
-    <button (click)="onLogout()">Odjava</button>
+    <nav class="header-nav">
+      <a routerLink="/my-appointments">Moji termini</a>
+      <button (click)="onLogout()" class="btn btn-primary btn-sm">Odjava</button>
+    </nav>
   }
 </header>
