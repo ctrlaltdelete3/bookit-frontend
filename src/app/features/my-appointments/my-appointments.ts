@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AppointmentService } from './appointment.service';
-import { Appointment } from './appointment.model';
+import { AppointmentService } from '../../core/appointments/appointment.service';
+import { Appointment } from '../../core/appointments/appointment.model';
 import { AppointmentStatus } from '../../shared/appointment-status.constants';
 
 @Component({
