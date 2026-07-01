@@ -15,4 +15,20 @@ export class AppointmentService {
       cancelationMessage,
     });
   }
+
+  createAppointment(
+    tenantId: number,
+    serviceId: number,
+    date: string,
+    startTime: string,
+    note: string | null,
+  ) {
+    return this.httpClient.post<Appointment>('/api/appointments', {
+      tenantId,
+      serviceId,
+      date,
+      startTime,
+      note,
+    });
+  }
 }

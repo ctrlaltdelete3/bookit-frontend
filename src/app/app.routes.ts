@@ -6,6 +6,7 @@ import { authGuard } from './core/auth/auth.guard';
 import { redirectGuard } from './core/auth/redirect.guard';
 import { Tenant } from './features/tenant/tenant';
 import { MyAppointments } from './features/my-appointments/my-appointments';
+import { Booking } from './features/booking/booking';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,11 @@ export const routes: Routes = [
   {
     path: 't/:slug',
     component: Tenant,
+  },
+  {
+    path: 't/:slug/book',
+    component: Booking,
+    canActivate: [authGuard],
   },
   {
     path: 'my-appointments',

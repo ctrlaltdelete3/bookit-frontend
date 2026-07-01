@@ -1,0 +1,67 @@
+<div class="page-container">
+  @if (tenant()) {
+    <h2 class="page-title">Rezervacija - {{ tenant()!.name }}</h2>
+
+    @if (currentStep() === 1) {
+      <h3 class="step-title">Odaberi uslugu:</h3>
+      <div class="service-list">
+        @for (service of services(); track service.id) {
+          <div (click)="selectService(service)" class="card service-card">
+            <strong class="service-name">{{ service.name }}</strong>
+            @if (service.description) {
+              <p>{{ service.description }}</p>
+            }
+            <span class="service-meta"
+              >{{ service.durationMinutes }} min -> {{ service.price }} €</span
+            >
+          </div>
+        } @empty {
+          <p class="empty-state">Nema dostupnih usluga.</p>
+        }
+      </div>
+    }
+
+    @if (currentStep() === 2) {
+      <h3 class="step-title">Odaberi datum i termin:</h3>
+      <div class="form-group">
+        <label class="form-label">Datum</label>
+        <input
+          type="date"
+          (change)="onDateChange($any($event.target).value)"
+          class="form-control date-input"
+        />
+      </div>
+      <div class="slot-grid">
+        @for (slot of availableSlots(); track slot.startTime) {
+          <div (click)="selectSlot(slot)" class="slot-card">
+            {{ slot.startTime }} - {{ slot.endTime }}
+          </div>
+        } @empty {
+          @if (selectedDate()) {
+            <p class="empty-state">Nema slobodnih termina na odabrani datum.</p>
+          }
+        }
+      </div>
+    }
+
+    @if (currentStep() === 3) {
+      <h3 class="step-title">Potvrdi rezervaciju</h3>
+      <div class="card summary-card">
+        <p><span class="summary-label">Usluga: </span>{{ selectedService()!.name }}</p>
+        <p><span class="summary-label">Datum: </span>{{ selectedSlot()!.date }}</p>
+        <p>
+          <span class="summary-label">Termin: </span>{{ selectedSlot()!.startTime }} -
+          {{ selectedSlot()!.endTime }}
+        </p>
+      </div>
+
+      <label class="form-label">Napomena (nije obavezno)</label>
+      <textarea
+        (input)="note.set($any($event.target).value)"
+        rows="3"
+        class="form-label"
+      ></textarea>
+      <button (click)="submit()" class="btn btn-primary">Rezerviraj</button>
+    }
+  }
+</div>
