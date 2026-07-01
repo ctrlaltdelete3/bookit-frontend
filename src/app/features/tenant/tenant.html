@@ -18,6 +18,10 @@
       <p class="tenant-description">{{ t.description }}</p>
     }
 
+    @if (!authService.isTenantOwner()) {
+      <a class="btn btn-primary" [routerLink]="['/t', t.slug, 'book']">Rezerviraj</a>
+    }
+
     <div class="tenant-section">
       <h3 class="section-title">Radno vrijeme</h3>
       <div class="working-hours-list">

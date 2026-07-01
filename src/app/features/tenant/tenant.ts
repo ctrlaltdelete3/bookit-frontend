@@ -1,18 +1,20 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TenantService } from './tenant.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Service, Tenant as TenantModel, WorkingHours } from './tenant.model';
 import { DayOfWeekPipe } from '../../shared/pipes/day-of-week-pipe';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-tenant',
-  imports: [DayOfWeekPipe],
+  imports: [DayOfWeekPipe, RouterLink],
   templateUrl: './tenant.html',
   styleUrl: './tenant.css',
 })
 export class Tenant implements OnInit {
   private tenantService = inject(TenantService);
   private route = inject(ActivatedRoute);
+  authService = inject(AuthService);
   tenant = signal<TenantModel | undefined>(undefined);
   tenantServices = signal<Service[] | undefined>(undefined);
   workingHours = signal<WorkingHours[] | undefined>(undefined);
