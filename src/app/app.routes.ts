@@ -7,6 +7,8 @@ import { redirectGuard } from './core/auth/redirect.guard';
 import { Tenant } from './features/tenant/tenant';
 import { MyAppointments } from './features/my-appointments/my-appointments';
 import { Booking } from './features/booking/booking';
+import { Dashboard } from './features/dashboard/dashboard';
+import { tenantOwnerGuard } from './core/auth/tenant-owner-guard';
 
 export const routes: Routes = [
   {
@@ -40,6 +42,12 @@ export const routes: Routes = [
     path: 'my-appointments',
     component: MyAppointments,
     canActivate: [authGuard],
+  },
+  {
+    path: 'dashboard',
+    component: Dashboard,
+    canActivate: [authGuard, tenantOwnerGuard],
+    children: [{ path: '', redirectTo: 'appointments', pathMatch: 'full' }],
   },
   {
     path: '**',
