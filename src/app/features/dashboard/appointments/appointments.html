@@ -1,0 +1,59 @@
+<div class="page-container">
+  @if (tenantAppointments()) {
+    @for (appointment of tenantAppointments(); track appointment.id) {
+      <div class="card appointment-card">
+        <div class="appointment-card-header">
+          <div>
+            <p class="appointment-service">{{ appointment.serviceName }}</p>
+            <p class="appointment-client">{{ appointment.userName }}</p>
+          </div>
+          <span
+            class="badge"
+            [class.badge-pending]="appointment.status === AppointmentStatus.Pending"
+            [class.badge-confirmed]="appointment.status === AppointmentStatus.Confirmed"
+            [class.badge-canceled]="appointment.status === AppointmentStatus.Canceled"
+            [class.badge-rejected]="appointment.status === AppointmentStatus.Rejected"
+          >
+            {{ appointment.status }}
+          </span>
+        </div>
+
+        <div class="appointment-card-meta">
+          <span>{{ appointment.date }}</span>
+          <span>{{ appointment.startTime }} – {{ appointment.endTime }}</span>
+        </div>
+
+        @if (appointment.note) {
+          <p class="appointment-note">Napomena klijenta: {{ appointment.note }}</p>
+        }
+
+        @if (appointment.status === AppointmentStatus.Pending) {
+          <div class="appointment-card-actions">
+            <textarea
+              (input)="note.set($any($event.target).value)"
+              placeholder="Napomena (nije obavezno)"
+              rows="2"
+              class="form-control"
+            ></textarea>
+            <div class="action-buttons">
+              <button
+                class="btn btn-success btn-sm"
+                (click)="updateStatus(appointment, AppointmentStatus.Confirmed)"
+              >
+                Potvrdi
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="updateStatus(appointment, AppointmentStatus.Rejected)"
+              >
+                Odbij
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @empty {
+      <p class="empty-state">Nema termina.</p>
+    }
+  }
+</div>

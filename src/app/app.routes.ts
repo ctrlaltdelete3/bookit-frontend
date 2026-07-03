@@ -9,6 +9,7 @@ import { MyAppointments } from './features/my-appointments/my-appointments';
 import { Booking } from './features/booking/booking';
 import { Dashboard } from './features/dashboard/dashboard';
 import { tenantOwnerGuard } from './core/auth/tenant-owner-guard';
+import { TenantAppointments } from './features/dashboard/appointments/appointments';
 
 export const routes: Routes = [
   {
@@ -47,7 +48,10 @@ export const routes: Routes = [
     path: 'dashboard',
     component: Dashboard,
     canActivate: [authGuard, tenantOwnerGuard],
-    children: [{ path: '', redirectTo: 'appointments', pathMatch: 'full' }],
+    children: [
+      { path: '', redirectTo: 'appointments', pathMatch: 'full' },
+      { path: 'appointments', component: TenantAppointments },
+    ],
   },
   {
     path: '**',
