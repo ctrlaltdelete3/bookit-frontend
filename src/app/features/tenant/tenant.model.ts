@@ -13,6 +13,7 @@ export interface Tenant {
   createdAt: string;
 }
 
+//TODO: move Service later to some shared place
 export interface Service {
   id: number;
   name: string;

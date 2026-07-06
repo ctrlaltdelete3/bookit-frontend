@@ -1,0 +1,25 @@
+<div class="page-container">
+  <h1 class="page-title">Usluge</h1>
+
+  <div class="services-list">
+    @for (service of services(); track service.id) {
+      <div class="card service-card">
+        <div class="service-card-header">
+          <p class="service-name">{{ service.name }}</p>
+          <span class="service-price">{{ service.price }} €</span>
+        </div>
+
+        @if (service.description) {
+          <p class="service-description">{{ service.description }}</p>
+        }
+
+        <div class="service-card-meta">
+          <span>Trajanje: {{ service.durationMinutes }} min</span>
+          <span>Pauza nakon usluge: {{ service.breakMinutesAfterService }} min</span>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-state">Nema definiranih usluga.</p>
+    }
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { Booking } from './features/booking/booking';
 import { Dashboard } from './features/dashboard/dashboard';
 import { tenantOwnerGuard } from './core/auth/tenant-owner-guard';
 import { TenantAppointments } from './features/dashboard/appointments/appointments';
+import { Services } from './features/dashboard/services/services';
 
 export const routes: Routes = [
   {
@@ -51,6 +52,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'appointments', pathMatch: 'full' },
       { path: 'appointments', component: TenantAppointments },
+      { path: 'services', component: Services },
     ],
   },
   {

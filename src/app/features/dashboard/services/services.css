@@ -1,0 +1,50 @@
+:host {
+  display: block;
+}
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.service-card {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.service-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.service-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.service-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--c-primary);
+  white-space: nowrap;
+}
+
+.service-description {
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+
+.service-card-meta {
+  display: flex;
+  gap: var(--space-lg);
+  font-size: 13px;
+  color: var(--c-text-muted);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--c-border);
+}

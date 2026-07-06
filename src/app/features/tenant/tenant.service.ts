@@ -17,4 +17,8 @@ export class TenantService {
   getWorkingHoursBySlug(slug: string) {
     return this.httpClient.get<WorkingHours[]>(`/api/tenants/${slug}/working-hours`);
   }
+
+  getMyTenant() {
+    return this.httpClient.get<Tenant>('/api/tenants/my');
+  }
 }
