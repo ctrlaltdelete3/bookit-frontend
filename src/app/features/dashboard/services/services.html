@@ -1,5 +1,8 @@
 <div class="page-container">
-  <h1 class="page-title">Usluge</h1>
+  <div class="services-header">
+    <h1 class="page-title">Usluge</h1>
+    <button type="button" class="btn btn-primary" (click)="onOpenAddForm()">Dodaj novu uslugu</button>
+  </div>
 
   <div class="services-list">
     @for (service of services(); track service.id) {
@@ -17,9 +20,65 @@
           <span>Trajanje: {{ service.durationMinutes }} min</span>
           <span>Pauza nakon usluge: {{ service.breakMinutesAfterService }} min</span>
         </div>
+
+        <div class="service-card-actions">
+          <button type="button" class="btn btn-secondary btn-sm" (click)="onOpenEditForm(service)">
+            Uredi
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(service.id)">
+            Obriši
+          </button>
+        </div>
       </div>
     } @empty {
       <p class="empty-state">Nema definiranih usluga.</p>
     }
   </div>
+
+  @if (isFormOpen) {
+    <div class="card service-form-card">
+      <h2 class="section-title">
+        {{ editingServiceId !== null ? 'Uredi uslugu' : 'Nova usluga' }}
+      </h2>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="serviceName">Naziv usluge</label>
+          <input id="serviceName" formControlName="serviceName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Opis</label>
+          <input id="description" formControlName="description" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="duration">Trajanje (min)</label>
+          <input id="duration" type="number" formControlName="duration" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="breakAfterService">Pauza nakon usluge (min)</label>
+          <input
+            id="breakAfterService"
+            type="number"
+            formControlName="breakAfterService"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="price">Cijena (€)</label>
+          <input id="price" type="number" formControlName="price" class="form-control" />
+        </div>
+
+        <div class="service-form-actions">
+          <button type="submit" [disabled]="form.invalid" class="btn btn-primary">
+            {{ editingServiceId !== null ? 'Ažuriraj uslugu' : 'Dodaj uslugu' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="closeForm()">Odustani</button>
+        </div>
+      </form>
+    </div>
+  }
 </div>

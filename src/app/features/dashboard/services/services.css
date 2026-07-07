@@ -2,10 +2,22 @@
   display: block;
 }
 
+.services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.services-header .page-title {
+  margin-bottom: 0;
+}
+
 .services-list {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  margin-bottom: var(--space-xl);
 }
 
 .service-card {
@@ -47,4 +59,20 @@
   color: var(--c-text-muted);
   padding-top: var(--space-sm);
   border-top: 1px solid var(--c-border);
+}
+
+.service-card-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.service-form-card {
+  padding: var(--space-lg);
+  max-width: 480px;
+}
+
+.service-form-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
 }
