@@ -1,0 +1,31 @@
+<div class="page-container">
+  <h1 class="page-title">Radno vrijeme</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="card working-hours-card">
+    <div class="working-hours-row working-hours-row-header">
+      <span>Dan</span>
+      <span>Radni dan</span>
+      <span>Od</span>
+      <span>Do</span>
+      <span>Pauza od</span>
+      <span>Pauza do</span>
+    </div>
+
+    <div formArrayName="days">
+      @for (dayGroup of days.controls; track $index) {
+        <div [formGroupName]="$index" class="working-hours-row">
+          <span class="working-hours-day">{{ dayGroup.value.dayOfWeek | dayOfWeek }}</span>
+          <input type="checkbox" formControlName="isWorkingDay" />
+          <input type="time" formControlName="startTime" class="form-control" />
+          <input type="time" formControlName="endTime" class="form-control" />
+          <input type="time" formControlName="pauseStart" class="form-control" />
+          <input type="time" formControlName="pauseEnd" class="form-control" />
+        </div>
+      }
+    </div>
+
+    <div class="working-hours-actions">
+      <button type="submit" class="btn btn-primary">Spremi</button>
+    </div>
+  </form>
+</div>

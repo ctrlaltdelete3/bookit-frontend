@@ -11,6 +11,7 @@ import { Dashboard } from './features/dashboard/dashboard';
 import { tenantOwnerGuard } from './core/auth/tenant-owner-guard';
 import { TenantAppointments } from './features/dashboard/appointments/appointments';
 import { Services } from './features/dashboard/services/services';
+import { WorkingHours } from './features/dashboard/working-hours/working-hours';
 
 export const routes: Routes = [
   {
@@ -53,6 +54,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'appointments', pathMatch: 'full' },
       { path: 'appointments', component: TenantAppointments },
       { path: 'services', component: Services },
+      { path: 'working-hours', component: WorkingHours },
     ],
   },
   {

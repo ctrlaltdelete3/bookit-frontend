@@ -26,6 +26,7 @@ export interface Service {
   tenantName: string;
 }
 
+//TODO: move WorkingHours later to some shared place
 export interface WorkingHours {
   id: number;
   dayOfWeek: number;
