@@ -7,6 +7,6 @@ export class WorkingHoursService {
   private httpClient = inject(HttpClient);
 
   setWorkingHours(workingHours: WorkingHoursInput[]) {
-    return this.httpClient.put<WorkingHoursInput[]>('/api/working-hours', workingHours);
+    return this.httpClient.put<WorkingHoursInput[]>('/api/workinghours', workingHours);
   }
 }

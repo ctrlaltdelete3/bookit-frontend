@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { WorkingHoursService } from './working-hours.service';
 import { WorkingHoursInput } from './working-hours.model';
 import { TenantService } from '../../tenant/tenant.service';
@@ -16,6 +16,7 @@ export class WorkingHours implements OnInit {
   private workingHoursService = inject(WorkingHoursService);
   private tenantService = inject(TenantService);
   private tenantSlug: string | null = null;
+  private cdr = inject(ChangeDetectorRef);
 
   form = new FormGroup({
     days: new FormArray<FormGroup>([]),
@@ -36,9 +37,10 @@ export class WorkingHours implements OnInit {
     if (!this.tenantSlug) {
       return;
     }
-    this.tenantService
-      .getWorkingHoursBySlug(this.tenantSlug)
-      .subscribe((workingHours) => this.buildForm(workingHours));
+    this.tenantService.getWorkingHoursBySlug(this.tenantSlug).subscribe((workingHours) => {
+      this.buildForm(workingHours);
+      this.cdr.markForCheck();
+    });
   }
 
   private buildForm(existing: WorkingHoursModel[]) {

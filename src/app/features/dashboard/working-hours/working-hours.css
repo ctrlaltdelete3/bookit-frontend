@@ -6,12 +6,17 @@
   padding: var(--space-lg);
 }
 
+.working-hours-table {
+  overflow-x: auto;
+}
+
 .working-hours-row {
   display: grid;
-  grid-template-columns: 120px 90px repeat(4, 1fr);
+  grid-template-columns: 100px 70px repeat(4, 140px);
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   padding: var(--space-sm) 0;
+  width: max-content;
 }
 
 .working-hours-row:not(.working-hours-row-header) {
@@ -34,6 +39,11 @@
   width: 18px;
   height: 18px;
   cursor: pointer;
+}
+
+.working-hours-row input[type='time'] {
+  min-width: 0;
+  width: 100%;
 }
 
 .working-hours-actions {
