@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthResponse, RegisterRequest, User } from './auth.model';
 import { tap } from 'rxjs';
@@ -9,11 +9,16 @@ export class AuthService {
   private httpClient = inject(HttpClient);
   private router = inject(Router);
   currentUser = signal<User | undefined>(undefined);
+  private tokenSignal = signal<string | null>(localStorage.getItem('token'));
+
+  isLoggedIn = computed(() => !!this.tokenSignal());
+  isTenantOwner = computed(() => this.currentUser()?.isTenantOwner ?? false);
 
   login(email: string, password: string) {
     return this.httpClient.post<AuthResponse>('/api/user/login', { email, password }).pipe(
       tap((response) => {
         localStorage.setItem('token', response.token);
+        this.tokenSignal.set(response.token);
       }),
     );
   }
@@ -33,6 +38,7 @@ export class AuthService {
     return this.httpClient.post<AuthResponse>('/api/user/register', body).pipe(
       tap((response) => {
         localStorage.setItem('token', response.token);
+        this.tokenSignal.set(response.token);
       }),
     );
   }
@@ -45,15 +51,9 @@ export class AuthService {
     );
   }
 
-  isTenantOwner(): boolean {
-    return this.currentUser()?.isTenantOwner ?? false;
-  }
-
-  isLoggedIn() {
-    return !!localStorage.getItem('token');
-  }
-
   clearToken() {
     localStorage.removeItem('token');
+    this.tokenSignal.set(null);
+    this.currentUser.set(undefined);
   }
 }

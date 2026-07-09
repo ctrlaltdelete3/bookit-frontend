@@ -9,11 +9,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.css',
 })
 export class Header {
-  private authService = inject(AuthService);
-
-  get IsLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
+  protected authService = inject(AuthService);
 
   onLogout() {
     this.authService.logout().subscribe();
