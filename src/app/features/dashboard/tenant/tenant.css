@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.tenant-public-link {
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 14px;
+  color: var(--c-text-muted);
+}
+
+.tenant-public-link a {
+  font-weight: 600;
+  color: var(--c-primary);
+}
+
+.tenant-form-card {
+  padding: var(--space-lg);
+  max-width: 480px;
+}

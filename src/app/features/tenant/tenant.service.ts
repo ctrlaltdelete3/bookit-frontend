@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Service, Tenant, WorkingHours } from './tenant.model';
+import { Service, Tenant, UpdatedTenant, WorkingHours } from './tenant.model';
 
 @Injectable({ providedIn: 'root' })
 export class TenantService {
@@ -20,5 +20,9 @@ export class TenantService {
 
   getMyTenant() {
     return this.httpClient.get<Tenant>('/api/tenants/my');
+  }
+
+  updateTenant(tenantId: number, updatedTenant: UpdatedTenant) {
+    return this.httpClient.put<Tenant>(`/api/tenants/${tenantId}`, updatedTenant);
   }
 }

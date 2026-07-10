@@ -37,3 +37,13 @@ export interface WorkingHours {
   pauseEnd: string | null;
   tenantId: number;
 }
+
+export interface UpdatedTenant {
+  name: string;
+  activityType: string;
+  description: string | null;
+  address: string | null;
+  city: string | null;
+  contactEmail: string;
+  contactPhone: string | null;
+}

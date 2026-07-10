@@ -1,0 +1,51 @@
+<div class="page-container">
+  <h1 class="page-title">Moj tenant</h1>
+
+  @if (tenant(); as t) {
+    <div class="card tenant-public-link">
+      <span>Javna stranica:</span>
+      <a [routerLink]="['/t', t.slug]">/t/{{ t.slug }}</a>
+    </div>
+  }
+
+  <div class="card tenant-form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Naziv</label>
+        <input id="name" formControlName="name" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="activityType">Vrsta djelatnosti</label>
+        <input id="activityType" formControlName="activityType" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Opis</label>
+        <input id="description" formControlName="description" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Adresa</label>
+        <input id="address" formControlName="address" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="city">Grad</label>
+        <input id="city" formControlName="city" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="contactEmail">Kontakt email</label>
+        <input id="contactEmail" type="email" formControlName="contactEmail" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="contactPhone">Kontakt telefon</label>
+        <input id="contactPhone" formControlName="contactPhone" class="form-control" />
+      </div>
+
+      <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Spremi</button>
+    </form>
+  </div>
+</div>
