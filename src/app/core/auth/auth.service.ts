@@ -15,17 +15,18 @@ export class AuthService {
   isTenantOwner = computed(() => this.currentUser()?.isTenantOwner ?? false);
 
   login(email: string, password: string) {
-    return this.httpClient.post<AuthResponse>('/api/user/login', { email, password }).pipe(
-      tap((response) => {
-        localStorage.setItem('token', response.token);
-        this.tokenSignal.set(response.token);
-      }),
-    );
+    return this.httpClient
+      .post<AuthResponse>('/api/user/login', { email, password }, { withCredentials: true })
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('token', response.token);
+          this.tokenSignal.set(response.token);
+        }),
+      );
   }
 
-  //TODO: implement this in backend then test; also impelement refresh token!!
   logout() {
-    return this.httpClient.post('/api/user/logout', null).pipe(
+    return this.httpClient.post('/api/refreshtoken/logout', null, { withCredentials: true }).pipe(
       tap(() => {
         this.clearToken();
         this.router.navigate(['/login']);
@@ -35,12 +36,14 @@ export class AuthService {
 
   register(firstName: string, lastName: string, email: string, password: string, phone: string) {
     const body: RegisterRequest = { firstName, lastName, email, password, phone };
-    return this.httpClient.post<AuthResponse>('/api/user/register', body).pipe(
-      tap((response) => {
-        localStorage.setItem('token', response.token);
-        this.tokenSignal.set(response.token);
-      }),
-    );
+    return this.httpClient
+      .post<AuthResponse>('/api/user/register', body, { withCredentials: true })
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('token', response.token);
+          this.tokenSignal.set(response.token);
+        }),
+      );
   }
 
   getCurrentUser() {
@@ -49,6 +52,11 @@ export class AuthService {
         this.currentUser.set(user);
       }),
     );
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+    this.tokenSignal.set(token);
   }
 
   clearToken() {

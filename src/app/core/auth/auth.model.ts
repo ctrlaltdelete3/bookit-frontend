@@ -24,3 +24,7 @@ export interface User {
   isTenantOwner: boolean;
   ownedTenantId: number | null;
 }
+
+export interface NewAccessToken {
+  accessToken: string;
+}
