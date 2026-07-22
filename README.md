@@ -1,59 +1,37 @@
-# BookitFrontend
+# BookIt — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+Angular frontend for BookIt, an appointment booking platform. Service providers ("tenants" — hairdressers, beauticians, personal trainers, etc.) manage their business — services, working hours, incoming appointments — while clients browse tenant profiles and book available time slots.
 
-## Development server
+> This is a learning project built to get hands-on experience with Angular on top of an already-built ASP.NET Core backend ([BookIt](../BookIt)). It is intentionally not production-ready — see [Known Limitations](#known-limitations) below for what's missing or should be improved.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Angular 21** — standalone components, zoneless change detection (signals-based reactivity), functional guards and interceptors
+- **RxJS** — HTTP calls via `HttpClient`
+- **Reactive Forms** — including `FormArray` for the working-hours (7-day) form
+- **JWT** — short-lived access token stored in localStorage, attached via interceptor; silent refresh via HttpOnly cookie when a request gets a 401
+- **Vitest** — configured as the test runner (no real test coverage yet, see below)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Features
 
-```bash
-ng generate component component-name
-```
+- **Auth** — register, login, logout; role-based guard distinguishing tenant owners from clients
+- **Public tenant profile** (`/t/:slug`) — services and working hours, no login required
+- **Booking wizard** — pick a service, then a date/available slot, then confirm
+- **My appointments** (client) — list of bookings with status, cancel option
+- **Tenant owner dashboard** (nested routes, guarded) — manage services (CRUD), working hours, incoming appointments (confirm/reject), and tenant profile info
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Known Limitations
 
-## Building
+These are known gaps, tracked for follow-up — not oversights.
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **No cross-field validation on the working-hours form** — a day marked as a working day isn't required to have start/end/pause times filled in
+- **Add/edit forms (services, working hours) render inline below the list**, not as a modal/overlay — on a long list the form isn't visible without scrolling
+- **No real unit tests** — only the default generated spec file exists; Vitest is set up but unused
+- **A few cross-feature pieces still live under a single feature folder instead of `core/`** — e.g. `TenantService` and the `Service`/`WorkingHours` models are used by multiple features but weren't moved when they stopped being single-feature; tracked as a refactor, not urgent
+- **No loading indicators or toast/snackbar notifications** for async requests
