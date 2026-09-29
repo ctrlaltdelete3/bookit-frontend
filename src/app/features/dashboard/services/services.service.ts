@@ -22,9 +22,4 @@ export class ServiceService {
   getService(serviceId: number) {
     return this.httpClient.get<Service>(`/api/services/${serviceId}`);
   }
-
-  //TODO: add these methods
-  addTimeSlot() {}
-
-  removeTimeSlot() {}
 }
