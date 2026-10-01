@@ -22,9 +22,21 @@
             <input type="time" formControlName="pauseStart" class="form-control" />
             <input type="time" formControlName="pauseEnd" class="form-control" />
           </div>
+
+          @if (dayErrorMessage(dayGroup); as message) {
+            <p class="form-error-message">{{ message }}</p>
+          }
         }
       </div>
     </div>
+
+    @if (errorMessages().length > 0) {
+      <ul class="form-error-message">
+        @for (message of errorMessages(); track message) {
+          <li>{{ message }}</li>
+        }
+      </ul>
+    }
 
     <div class="working-hours-actions">
       <button type="submit" class="btn btn-primary">Spremi</button>

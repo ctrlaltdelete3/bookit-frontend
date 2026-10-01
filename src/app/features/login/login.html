@@ -10,13 +10,13 @@
     <label for="password">Password</label>
     <input type="password" formControlName="password" class="form-control" />
     @if (form.controls.password.touched && form.controls.password.invalid) {
-      <span>Lozinka mora imati minimalno 8 znakova.</span>
+      <span>Lozinka je obavezna.</span>
     }
   </div>
 
-  @if (errorMessage !== '') {
-    <p class="form-error-message">{{ errorMessage }}</p>
+  @if (errorMessage() !== '') {
+    <p class="form-error-message">{{ errorMessage() }}</p>
   }
 
-  <button type="submit" [disabled]="form.invalid" class="btn btn-primary btn-full">Login</button>
+  <button type="submit" class="btn btn-primary btn-full">Login</button>
 </form>

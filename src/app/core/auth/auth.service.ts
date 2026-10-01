@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthResponse, RegisterRequest, User } from './auth.model';
-import { tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -27,7 +27,7 @@ export class AuthService {
 
   logout() {
     return this.httpClient.post('/api/refreshtoken/logout', null, { withCredentials: true }).pipe(
-      tap(() => {
+      finalize(() => {
         this.clearToken();
         this.router.navigate(['/login']);
       }),

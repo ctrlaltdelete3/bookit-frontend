@@ -1,10 +1,18 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { WorkingHoursService } from './working-hours.service';
 import { WorkingHoursInput } from './working-hours.model';
 import { TenantService } from '../../tenant/tenant.service';
 import { WorkingHours as WorkingHoursModel } from '../../tenant/tenant.model';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { DayOfWeekPipe } from '../../../shared/pipes/day-of-week-pipe';
+import { HttpErrorResponse } from '@angular/common/http';
+import { workingDayValidator, workingDayErrorMessages } from './working-day.validator';
 
 @Component({
   selector: 'app-working-hours',
@@ -17,6 +25,7 @@ export class WorkingHours implements OnInit {
   private tenantService = inject(TenantService);
   private tenantSlug: string | null = null;
   private cdr = inject(ChangeDetectorRef);
+  protected errorMessages = signal<string[]>([]);
 
   form = new FormGroup({
     days: new FormArray<FormGroup>([]),
@@ -47,24 +56,73 @@ export class WorkingHours implements OnInit {
     this.days.clear();
     for (let day = 0; day <= 6; day++) {
       const found = existing.find((wh) => wh.dayOfWeek === day);
-      this.days.push(
-        new FormGroup({
+
+      //create group for current day
+      const dayGroup = new FormGroup(
+        {
           dayOfWeek: new FormControl(day, { nonNullable: true }),
           isWorkingDay: new FormControl(found?.isWorkingDay ?? false, { nonNullable: true }),
           startTime: new FormControl(found?.startTime ?? null),
           endTime: new FormControl(found?.endTime ?? null),
           pauseStart: new FormControl(found?.pauseStart ?? null),
           pauseEnd: new FormControl(found?.pauseEnd ?? null),
-        }),
+        },
+        {
+          validators: workingDayValidator,
+        },
       );
+
+      //starting with: if it's non-working day - all fields will be disabled
+      this.updateTimeControls(dayGroup, dayGroup.controls.isWorkingDay.value);
+
+      //each time checkbox for this day is changed:
+      dayGroup.controls.isWorkingDay.valueChanges.subscribe((isWorkingDay) =>
+        this.updateTimeControls(dayGroup, isWorkingDay),
+      );
+
+      this.days.push(dayGroup);
     }
+  }
+
+  private updateTimeControls(dayGroup: FormGroup, isWorkingDay: boolean) {
+    const timeControls = ['startTime', 'endTime', 'pauseStart', 'pauseEnd'];
+
+    for (const name of timeControls) {
+      const control = dayGroup.get(name)!;
+      if (isWorkingDay) {
+        control.enable();
+      } else {
+        control.disable();
+      }
+    }
+  }
+
+  protected dayErrorMessage(dayGroup: AbstractControl): string | null {
+    if (!dayGroup.errors || !(dayGroup.touched || dayGroup.dirty)) {
+      return null;
+    }
+    const errorKey = Object.keys(dayGroup.errors)[0];
+    return workingDayErrorMessages[errorKey];
   }
 
   onSubmit() {
     if (this.form.invalid) {
+      this.form.markAllAsTouched(); // show all errors
       return;
     }
+    this.errorMessages.set([]); // clear old error messages before retry
+
     const workingHours = this.days.value as WorkingHoursInput[];
-    this.workingHoursService.setWorkingHours(workingHours).subscribe(() => this.loadWorkingHours());
+    this.workingHoursService.setWorkingHours(workingHours).subscribe({
+      next: () => this.loadWorkingHours(),
+      error: (err: HttpErrorResponse) => {
+        const errors = err.error?.errors;
+        if (errors) {
+          this.errorMessages.set(Object.values(errors).flat() as string[]);
+        } else {
+          this.errorMessages.set(['Spremanje nije uspjelo. Pokušaj ponovno.']);
+        }
+      },
+    });
   }
 }

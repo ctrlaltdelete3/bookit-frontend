@@ -12,8 +12,15 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error) => {
-      //note: this is to prevent infinite loop: if the refresh endpoint itself returns 401, don't try to refresh again
-      if (error.status === 401 && !req.url.includes('/api/refreshtoken/refresh')) {
+      // don't try to refresh for auth requests:
+      // - login/register: 401 means wrong credentials, not an expired token
+      // - refresh: prevents an infinite loop if the refresh endpoint itself returns 401
+      const isAuthRequest =
+        req.url.includes('/api/user/login') ||
+        req.url.includes('/api/user/register') ||
+        req.url.includes('/api/refreshtoken/refresh');
+
+      if (error.status === 401 && !isAuthRequest) {
         const refreshClient = new HttpClient(httpBackend);
         return refreshClient
           .post<NewAccessToken>('/api/refreshtoken/refresh', null, { withCredentials: true })
@@ -26,6 +33,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               return next(newRequest);
             }),
             catchError((refreshError) => {
+              authService.clearToken();
               router.navigate(['/login']);
               return throwError(() => refreshError);
             }),

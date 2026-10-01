@@ -1,3 +1,19 @@
+.password-rules {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-xs) 0 0;
+  font-size: 12px;
+  color: var(--c-text-muted);
+}
+
+.password-rules li.met {
+  color: var(--c-success);
+}
+
+.password-rules li.unmet {
+  color: var(--c-error);
+}
+
 :host {
   display: flex;
   align-items: center;

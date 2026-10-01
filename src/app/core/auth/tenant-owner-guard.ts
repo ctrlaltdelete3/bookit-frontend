@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 export const tenantOwnerGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
@@ -11,7 +11,8 @@ export const tenantOwnerGuard: CanActivateFn = () => {
     return authService.isTenantOwner() ? true : router.createUrlTree(['/']);
   }
 
-  return authService
-    .getCurrentUser()
-    .pipe(map(() => (authService.isTenantOwner() ? true : router.createUrlTree(['/']))));
+  return authService.getCurrentUser().pipe(
+    map(() => (authService.isTenantOwner() ? true : router.createUrlTree(['/']))),
+    catchError(() => of(router.createUrlTree(['/login']))),
+  );
 };

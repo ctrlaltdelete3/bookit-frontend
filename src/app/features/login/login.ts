@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
@@ -12,21 +12,20 @@ import { Router } from '@angular/router';
 export class Login implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
-  errorMessage = '';
+  errorMessage = signal('');
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.pattern('(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*'),
-    ]),
+    // login only checks that a password was entered - complexity rules belong to registration
+    password: new FormControl('', [Validators.required]),
   });
 
   onSubmit() {
     if (this.form.invalid) {
+      this.form.markAllAsTouched(); // show validation messages instead of silently doing nothing
       return;
     }
+    this.errorMessage.set(''); // clear the previous error before a new attempt
     const { email, password } = this.form.value;
     this.authService.login(email!, password!).subscribe({
       next: () => {
@@ -34,7 +33,7 @@ export class Login implements OnInit {
           next: () => this.router.navigate(['/home']),
         });
       },
-      error: () => (this.errorMessage = 'Wrong username or password'),
+      error: () => this.errorMessage.set('Wrong username or password'),
     });
   }
 

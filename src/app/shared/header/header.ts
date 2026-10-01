@@ -12,6 +12,6 @@ export class Header {
   protected authService = inject(AuthService);
 
   onLogout() {
-    this.authService.logout().subscribe();
+    this.authService.logout().subscribe({ error: () => {} });
   }
 }

@@ -15,9 +15,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
-      // TODO: getCurrentUser() ovdje nema error handler - ako je token istekao puknut ce kod tu a ne hvatamo gresku
-      // rijesiti zajedno s refresh tokenom (vidi TODO u authService)
-      this.authService.getCurrentUser().subscribe();
+      this.authService.getCurrentUser().subscribe({ error: () => {} });
     }
   }
 }

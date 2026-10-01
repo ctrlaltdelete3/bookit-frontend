@@ -2,45 +2,64 @@
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email" formControlName="email" class="form-control" />
-    @if (form.controls.email.touched && form.controls.email.invalid) {
+    @if (form.controls.email.touched && form.controls.email.hasError('required')) {
       <span class="form-error">Email je obavezan.</span>
+    } @else if (form.controls.email.touched && form.controls.email.hasError('email')) {
+      <span class="form-error">Email nije ispravnog formata.</span>
     }
   </div>
   <div class="form-group">
     <label for="firstName">Ime</label>
     <input type="text" formControlName="firstName" class="form-control" />
-    @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+    @if (form.controls.firstName.touched && form.controls.firstName.hasError('required')) {
       <span class="form-error">Ime je obavezno.</span>
+    } @else if (form.controls.firstName.touched && form.controls.firstName.hasError('maxlength')) {
+      <span class="form-error">Ime može imati najviše 50 znakova.</span>
     }
   </div>
   <div class="form-group">
     <label for="lastName">Prezime</label>
     <input type="text" formControlName="lastName" class="form-control" />
-    @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+    @if (form.controls.lastName.touched && form.controls.lastName.hasError('required')) {
       <span class="form-error">Prezime je obavezno.</span>
+    } @else if (form.controls.lastName.touched && form.controls.lastName.hasError('maxlength')) {
+      <span class="form-error">Prezime može imati najviše 50 znakova.</span>
     }
   </div>
   <div class="form-group">
     <label for="password">Lozinka</label>
     <input type="password" formControlName="password" class="form-control" />
-    @if (form.controls.password.touched && form.controls.password.invalid) {
+    @if (form.controls.password.touched && form.controls.password.hasError('required')) {
       <span class="form-error">Lozinka je obavezna.</span>
     }
+    <!-- checklist is always visible, so the user knows the rules before typing -->
+    <ul class="password-rules">
+      @for (rule of passwordRules; track rule.errorKey) {
+        <li
+          [class.met]="isPasswordRuleMet(rule.errorKey)"
+          [class.unmet]="form.controls.password.touched && !isPasswordRuleMet(rule.errorKey)"
+        >
+          {{ isPasswordRuleMet(rule.errorKey) ? '✓' : '✗' }} {{ rule.label }}
+        </li>
+      }
+    </ul>
   </div>
   <div class="form-group">
     <label for="phone">Broj mobitela</label>
     <input type="text" formControlName="phone" class="form-control" />
-    @if (form.controls.phone.touched && form.controls.phone.invalid) {
+    @if (form.controls.phone.touched && form.controls.phone.hasError('required')) {
       <span class="form-error">Broj mobitela je obavezan.</span>
+    } @else if (form.controls.phone.touched && form.controls.phone.hasError('pattern')) {
+      <span class="form-error">Unesi broj u formatu 091 234 5678 ili +385 91 234 5678.</span>
     }
   </div>
 
-  @if (errorMessage !== '') {
-    <p class="form-error-message">{{ errorMessage }}</p>
+  @if (errorMessage() !== '') {
+    <p class="form-error-message">{{ errorMessage() }}</p>
   }
 
   <div>
-    <button type="submit" [disabled]="form.invalid" class="btn btn-primary btn-full">
+    <button type="submit" class="btn btn-primary btn-full">
       Registriraj se
     </button>
   </div>
