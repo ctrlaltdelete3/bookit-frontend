@@ -23,16 +23,18 @@ export const workingDayValidator: ValidatorFn = (
   if (start >= end) {
     return { endBeforeStart: true };
   }
+  // each pause time is checked on its own, as soon as it's entered (same as the backend validator)
+  if (
+    (pauseStart && (pauseStart <= start || pauseStart >= end)) ||
+    (pauseEnd && (pauseEnd <= start || pauseEnd >= end))
+  ) {
+    return { pauseOutsideWorkingHours: true };
+  }
   if (!!pauseStart !== !!pauseEnd) {
     return { pauseIncomplete: true };
   }
-  if (pauseStart && pauseEnd) {
-    if (pauseStart >= pauseEnd) {
-      return { pauseEndBeforeStart: true };
-    }
-    if (pauseStart <= start || pauseEnd >= end) {
-      return { pauseOutsideWorkingHours: true };
-    }
+  if (pauseStart && pauseEnd && pauseStart >= pauseEnd) {
+    return { pauseEndBeforeStart: true };
   }
   return null; // sve u redu
 };

@@ -13,14 +13,15 @@
       </div>
 
       <div formArrayName="days">
-        @for (dayGroup of days.controls; track $index) {
+        <!-- track by the group itself: after reload buildForm() creates new groups, so rows must be recreated, not reused -->
+        @for (dayGroup of days.controls; track dayGroup) {
           <div [formGroupName]="$index" class="working-hours-row">
             <span class="working-hours-day">{{ dayGroup.value.dayOfWeek | dayOfWeek }}</span>
             <input type="checkbox" formControlName="isWorkingDay" />
-            <input type="time" formControlName="startTime" class="form-control" />
-            <input type="time" formControlName="endTime" class="form-control" />
-            <input type="time" formControlName="pauseStart" class="form-control" />
-            <input type="time" formControlName="pauseEnd" class="form-control" />
+            <input type="time" formControlName="startTime" appCompleteTime class="form-control" />
+            <input type="time" formControlName="endTime" appCompleteTime class="form-control" />
+            <input type="time" formControlName="pauseStart" appCompleteTime class="form-control" />
+            <input type="time" formControlName="pauseEnd" appCompleteTime class="form-control" />
           </div>
 
           @if (dayErrorMessage(dayGroup); as message) {

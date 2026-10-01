@@ -13,10 +13,13 @@ import {
 import { DayOfWeekPipe } from '../../../shared/pipes/day-of-week-pipe';
 import { HttpErrorResponse } from '@angular/common/http';
 import { workingDayValidator, workingDayErrorMessages } from './working-day.validator';
+import { CompleteTimeDirective } from '../../../shared/directives/complete-time.directive';
+
+const TIME_CONTROLS = ['startTime', 'endTime', 'pauseStart', 'pauseEnd'] as const;
 
 @Component({
   selector: 'app-working-hours',
-  imports: [ReactiveFormsModule, DayOfWeekPipe],
+  imports: [ReactiveFormsModule, DayOfWeekPipe, CompleteTimeDirective],
   templateUrl: './working-hours.html',
   styleUrl: './working-hours.css',
 })
@@ -85,9 +88,7 @@ export class WorkingHours implements OnInit {
   }
 
   private updateTimeControls(dayGroup: FormGroup, isWorkingDay: boolean) {
-    const timeControls = ['startTime', 'endTime', 'pauseStart', 'pauseEnd'];
-
-    for (const name of timeControls) {
+    for (const name of TIME_CONTROLS) {
       const control = dayGroup.get(name)!;
       if (isWorkingDay) {
         control.enable();
@@ -98,7 +99,15 @@ export class WorkingHours implements OnInit {
   }
 
   protected dayErrorMessage(dayGroup: AbstractControl): string | null {
-    if (!dayGroup.errors || !(dayGroup.touched || dayGroup.dirty)) {
+    if (!(dayGroup.touched || dayGroup.dirty)) {
+      return null;
+    }
+    // error on a single field (from CompleteTimeDirective) - checked first, because a half-typed time looks empty to the group validator
+    const hasIncompleteTime = TIME_CONTROLS.some((name) => dayGroup.get(name)?.hasError('incompleteTime'));
+    if (hasIncompleteTime) {
+      return 'Neko vrijeme nije do kraja upisano (provjeri sate, minute i AM/PM).';
+    }
+    if (!dayGroup.errors) {
       return null;
     }
     const errorKey = Object.keys(dayGroup.errors)[0];
@@ -112,7 +121,14 @@ export class WorkingHours implements OnInit {
     }
     this.errorMessages.set([]); // clear old error messages before retry
 
-    const workingHours = this.days.value as WorkingHoursInput[];
+    // an emptied <input type="time"> gives "" instead of null - backend can't convert "" to TimeOnly?
+    const workingHours = (this.days.value as WorkingHoursInput[]).map((day) => ({
+      ...day,
+      startTime: day.startTime || null,
+      endTime: day.endTime || null,
+      pauseStart: day.pauseStart || null,
+      pauseEnd: day.pauseEnd || null,
+    }));
     this.workingHoursService.setWorkingHours(workingHours).subscribe({
       next: () => this.loadWorkingHours(),
       error: (err: HttpErrorResponse) => {
