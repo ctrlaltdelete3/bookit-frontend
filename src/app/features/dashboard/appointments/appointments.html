@@ -30,7 +30,7 @@
         @if (appointment.status === AppointmentStatus.Pending) {
           <div class="appointment-card-actions">
             <textarea
-              (input)="note.set($any($event.target).value)"
+              #noteInput
               placeholder="Napomena (nije obavezno)"
               rows="2"
               class="form-control"
@@ -38,13 +38,13 @@
             <div class="action-buttons">
               <button
                 class="btn btn-success btn-sm"
-                (click)="updateStatus(appointment, AppointmentStatus.Confirmed)"
+                (click)="updateStatus(appointment, AppointmentStatus.Confirmed, noteInput.value)"
               >
                 Potvrdi
               </button>
               <button
                 class="btn btn-danger btn-sm"
-                (click)="updateStatus(appointment, AppointmentStatus.Rejected)"
+                (click)="updateStatus(appointment, AppointmentStatus.Rejected, noteInput.value)"
               >
                 Odbij
               </button>

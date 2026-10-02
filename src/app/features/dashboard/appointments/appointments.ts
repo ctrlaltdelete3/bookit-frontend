@@ -15,7 +15,6 @@ import {
 export class TenantAppointments implements OnInit {
   private appointmentService = inject(AppointmentService);
   tenantAppointments = signal<Appointment[] | undefined>(undefined);
-  note = signal('');
   protected readonly AppointmentStatus = AppointmentStatus;
 
   ngOnInit() {
@@ -28,12 +27,9 @@ export class TenantAppointments implements OnInit {
       .subscribe((appointments) => this.tenantAppointments.set(appointments));
   }
 
-  updateStatus(appointment: Appointment, newStatus: AppointmentStatusType) {
+  updateStatus(appointment: Appointment, newStatus: AppointmentStatusType, note: string) {
     this.appointmentService
-      .updateAppointment(appointment.id, newStatus, this.note() || null)
-      .subscribe(() => {
-        this.note.set(''); //TODO: reset after updating appointment (maybe need to implement some better solution)
-        this.loadTenantAppointments();
-      });
+      .updateAppointment(appointment.id, newStatus, note || null)
+      .subscribe(() => this.loadTenantAppointments());
   }
 }
